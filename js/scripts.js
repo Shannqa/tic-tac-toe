@@ -1,4 +1,3 @@
-let gameState = "on";
 /* Players */
 const playerFactory = (id, token) => {
   const playerID = id;
@@ -8,13 +7,14 @@ const playerFactory = (id, token) => {
 
 const playerOne = playerFactory("1", "X");
 const playerTwo = playerFactory("2", "O");
-const activePlayer = document.querySelector(".active-player");
 
+const playerInfo = document.querySelector(".player-info");
+let gameState = "on";
+let previousMove = undefined;
+let nextMove = playerOne;
 /* Gameboard module */
 const gameboard = (() => {
   const board = ["-", "-", "-", "-", "-", "-", "-", "-", "-"];
-  let currentPlayer = playerOne;
-  let currentToken = currentPlayer.playerToken;
 
   const render = () => {
     const container = document.querySelector(".boardContainer");
@@ -23,30 +23,34 @@ const gameboard = (() => {
       fieldDiv.textContent = field;
 
       fieldDiv.addEventListener("click", () => {
-        //unable to place a token if the field is not empty
+        // unable to place a token if the field is not empty
         if (arr[index] != "-") {
           return;
         }
+        // unable to place a token if the game is finished
         if (gameState === "off") {
           return;
         }
-        if (currentPlayer === playerOne) {
+        // gameplay
+        if (nextMove === playerOne) {
           arr[index] = "X";
-          currentPlayer = playerTwo;
-        } else {
+          previousMove = playerOne;
+          nextMove = playerTwo;
+        } else if (nextMove === playerTwo) {
           arr[index] = "O";
-          currentPlayer = playerOne;
+          previousMove = playerTwo;
+          nextMove = playerOne;
         }
         fieldDiv.textContent = arr[index];
 
-        activePlayer.textContent =
+        playerInfo.textContent =
           "Next move: player " +
-          currentPlayer.playerID +
+          nextMove.playerID +
           " (" +
-          currentPlayer.playerToken +
+          nextMove.playerToken +
           ")";
         game.evaluate();
-        console.log(currentPlayer);
+        console.log(nextMove);
         console.log(board);
       });
 
@@ -54,7 +58,7 @@ const gameboard = (() => {
     });
   };
 
-  return { board, render, currentPlayer, currentToken, activePlayer };
+  return { board, render };
 })();
 
 const game = (() => {
@@ -99,13 +103,15 @@ const game = (() => {
         gameboard.board[2] === gameboard.board[6])
     ) {
       console.log("win");
-      gameboard.activePlayer.textContent =
+      playerInfo.textContent =
         "Congratulations! Player " +
-        gameboard.currentPlayer.playerID +
+        previousMove.playerID +
         " (" +
-        gameboard.currentPlayer.playerToken +
+        previousMove.playerToken +
         ") won the game!";
       gameState = "off";
+      previousMove = undefined;
+      nextMove = undefined;
     }
     return { gameState };
   }

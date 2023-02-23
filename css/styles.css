@@ -1,13 +1,42 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #334155;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+header {
+  color: #fff;
+  font-size: 2rem;
+  margin: 20px;
+}
+
+.player-info {
+  margin: 20px;
+  color: #fff;
+  font-size: 1.5rem;
+}
+
 .boardContainer {
   display: grid;
   grid-template-columns: 100px 100px 100px;
   grid-template-rows: 100px 100px 100px;
 }
 .boardContainer div {
-  background-color: blueviolet;
+  background-color: #e2e8f0;
   border: 1px solid black;
   font-size: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+footer {
+  color: #fff;
+  margin: 20px;
 }

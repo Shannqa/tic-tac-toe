@@ -112,6 +112,12 @@ const game = (() => {
       gameState = "off";
       previousMove = undefined;
       nextMove = undefined;
+    } else if (!gameboard.board.includes("-")) {
+      console.log("draw");
+      playerInfo.textContent = "The game ends in a draw!";
+      gameState = "off";
+      previousMove = undefined;
+      nextMove = undefined;
     }
     return { gameState };
   }

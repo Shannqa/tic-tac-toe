@@ -14,51 +14,62 @@ let previousMove = undefined;
 let nextMove = playerOne;
 /* Gameboard module */
 const gameboard = (() => {
-  const board = ["-", "-", "-", "-", "-", "-", "-", "-", "-"];
+  let board = ["-", "-", "-", "-", "-", "-", "-", "-", "-"];
+  const container = document.querySelector(".boardContainer");
 
-  const render = () => {
-    const container = document.querySelector(".boardContainer");
-    board.forEach((field, index, arr) => {
+  let createBoard = () => {
+    board.forEach((element, index, arr) => {
       const fieldDiv = document.createElement("div");
-      fieldDiv.textContent = field;
-
+      fieldDiv.textContent = element;
+      fieldDiv.setAttribute("class", "square");
       fieldDiv.addEventListener("click", () => {
-        // unable to place a token if the field is not empty
-        if (arr[index] != "-") {
+        // not able to place a token if the field is not empty or the game is off
+        if (arr[index] != "-" || gameState === "off") {
           return;
         }
-        // unable to place a token if the game is finished
-        if (gameState === "off") {
-          return;
-        }
-        // gameplay
+        arr[index] = nextMove.playerToken;
+        fillBoard();
+        game.evaluate();
         if (nextMove === playerOne) {
-          arr[index] = "X";
-          previousMove = playerOne;
           nextMove = playerTwo;
-        } else if (nextMove === playerTwo) {
-          arr[index] = "O";
-          previousMove = playerTwo;
+        } else {
           nextMove = playerOne;
         }
-        fieldDiv.textContent = arr[index];
-
-        playerInfo.textContent =
-          "Next move: player " +
-          nextMove.playerID +
-          " (" +
-          nextMove.playerToken +
-          ")";
-        game.evaluate();
-        console.log(nextMove);
-        console.log(board);
       });
-
       container.appendChild(fieldDiv);
     });
   };
 
-  return { board, render };
+  let fillBoard = () => {
+    const square = document.querySelectorAll(".square");
+    for (let i = 0; i < square.length; i++) {
+      square[i].textContent = board[i];
+    }
+  };
+
+  /* Restarting the game */
+  const restartButton = document.querySelector(".restart");
+  restartButton.addEventListener("click", () => {
+    gameState = "on";
+    nextMove = playerOne;
+    board.forEach((element, index, arr) => {
+      arr[index] = "-";
+    });
+    fillBoard();
+    playerInfo.textContent =
+      "Next move: player " +
+      nextMove.playerID +
+      " (" +
+      nextMove.playerToken +
+      ")";
+    restartButton.setAttribute("id", "hidden");
+  });
+
+  function showRestartBtn() {
+    restartButton.removeAttribute("id", "hidden");
+  }
+
+  return { board, createBoard, fillBoard, showRestartBtn };
 })();
 
 const game = (() => {
@@ -105,23 +116,25 @@ const game = (() => {
       console.log("win");
       playerInfo.textContent =
         "Congratulations! Player " +
-        previousMove.playerID +
+        nextMove.playerID +
         " (" +
-        previousMove.playerToken +
+        nextMove.playerToken +
         ") won the game!";
       gameState = "off";
-      previousMove = undefined;
       nextMove = undefined;
+      gameboard.showRestartBtn();
     } else if (!gameboard.board.includes("-")) {
       console.log("draw");
       playerInfo.textContent = "The game ends in a draw!";
       gameState = "off";
-      previousMove = undefined;
       nextMove = undefined;
+      gameboard.showRestartBtn();
     }
+
     return { gameState };
   }
   return { evaluate };
 })();
 
-gameboard.render();
+gameboard.createBoard();
+gameboard.fillBoard();

@@ -1,16 +1,18 @@
 /* Players */
-const playerFactory = (id, token) => {
+const playerFactory = (id, token, name) => {
   const playerID = id;
   const playerToken = token;
-  return { playerID, playerToken };
+  const playerName = name;
+  return { playerID, playerToken, playerName };
 };
 
-const playerOne = playerFactory("1", "X");
-const playerTwo = playerFactory("2", "O");
+const playerOne = playerFactory("1", "X", "Player 1");
+const playerTwo = playerFactory("2", "O", "Player 2");
+const playerThree = playerFactory("3", "O", "AI (normal)");
+const playerFour = playerFactory("4", "O", "AI (hard)");
 
 const playerInfo = document.querySelector(".player-info");
 let gameState = "on";
-let previousMove = undefined;
 let nextMove = playerOne;
 let mode = "player-game";
 
@@ -57,8 +59,9 @@ const gameboard = (() => {
           }
         }
 
-        if (mode === "pc-game") {
+        if (mode === "pc-game" && gameState === "on") {
           //computer's move
+          nextMove = playerThree;
           var indexes = Array.from(Array(board.length).keys());
           var availableIndexes = indexes.filter((index) => board[index] == "-");
 
@@ -66,9 +69,10 @@ const gameboard = (() => {
             availableIndexes[
               Math.floor(Math.random() * availableIndexes.length)
             ];
-          arr[AIMove] = playerTwo.playerToken;
+          arr[AIMove] = playerThree.playerToken;
           fillBoard();
           game.evaluate();
+          nextMove = playerOne;
         }
       });
 
@@ -151,11 +155,7 @@ const game = (() => {
     ) {
       console.log("win");
       playerInfo.textContent =
-        "Congratulations! Player " +
-        nextMove.playerID +
-        " (" +
-        nextMove.playerToken +
-        ") won the game!";
+        nextMove.playerName + " (" + nextMove.playerToken + ") won the game!";
       gameState = "off";
       nextMove = undefined;
       gameboard.showRestartBtn();

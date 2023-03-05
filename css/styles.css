@@ -22,6 +22,10 @@ header {
   font-size: 1.5rem;
 }
 
+.mode {
+  color: #fff;
+}
+
 .restart {
   margin-bottom: 20px;
   background-color: #e2e8f0;

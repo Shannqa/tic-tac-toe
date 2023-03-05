@@ -12,6 +12,23 @@ const playerInfo = document.querySelector(".player-info");
 let gameState = "on";
 let previousMove = undefined;
 let nextMove = playerOne;
+let mode = "player-game";
+
+const pcGame = document.querySelector("#pc-game");
+const playerGame = document.querySelector("#player-game");
+const pcHard = document.querySelector("#pc-hard");
+
+pcGame.addEventListener("click", () => {
+  mode = "pc-game";
+});
+playerGame.addEventListener("click", () => {
+  mode = "player-game";
+});
+
+pcHard.addEventListener("click", () => {
+  mode = "pc-hard";
+});
+
 /* Gameboard module */
 const gameboard = (() => {
   let board = ["-", "-", "-", "-", "-", "-", "-", "-", "-"];
@@ -22,6 +39,7 @@ const gameboard = (() => {
       const fieldDiv = document.createElement("div");
       fieldDiv.textContent = element;
       fieldDiv.setAttribute("class", "square");
+
       fieldDiv.addEventListener("click", () => {
         // not able to place a token if the field is not empty or the game is off
         if (arr[index] != "-" || gameState === "off") {
@@ -30,12 +48,30 @@ const gameboard = (() => {
         arr[index] = nextMove.playerToken;
         fillBoard();
         game.evaluate();
-        if (nextMove === playerOne) {
-          nextMove = playerTwo;
-        } else {
-          nextMove = playerOne;
+
+        if (mode === "player-game") {
+          if (nextMove === playerOne) {
+            nextMove = playerTwo;
+          } else {
+            nextMove = playerOne;
+          }
+        }
+
+        if (mode === "pc-game") {
+          //computer's move
+          var indexes = Array.from(Array(board.length).keys());
+          var availableIndexes = indexes.filter((index) => board[index] == "-");
+
+          let AIMove =
+            availableIndexes[
+              Math.floor(Math.random() * availableIndexes.length)
+            ];
+          arr[AIMove] = playerTwo.playerToken;
+          fillBoard();
+          game.evaluate();
         }
       });
+
       container.appendChild(fieldDiv);
     });
   };

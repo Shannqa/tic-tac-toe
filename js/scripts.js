@@ -1,9 +1,9 @@
 /* Players */
-const playerFactory = (id, token, name) => {
-  const playerID = id;
-  const playerToken = token;
-  const playerName = name;
-  return { playerID, playerToken, playerName };
+const playerFactory = (playerID, playerToken, playerName) => {
+  const ID = playerID;
+  const token = playerToken;
+  const name = playerName;
+  return { ID, token, name };
 };
 
 const playerOne = playerFactory("1", "X", "Player 1");
@@ -32,11 +32,88 @@ pcHard.addEventListener("click", () => {
 });
 
 /* Gameboard module */
+
 const gameboard = (() => {
   let board = ["-", "-", "-", "-", "-", "-", "-", "-", "-"];
   const container = document.querySelector(".boardContainer");
+  let currentPlayer = playerOne;
 
+  /* Board: 
+    0 1 2
+    3 4 5
+    6 7 8 */
+
+  const winCombos = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  // create an empty board
   let createBoard = () => {
+    board.forEach((element, index) => {
+      const fieldDiv = document.createElement("div");
+      fieldDiv.textContent = element;
+      fieldDiv.setAttribute("class", "square");
+      fieldDiv.setAttribute("id", `${index}`);
+      fieldDiv.addEventListener("click", clickField);
+      container.appendChild(fieldDiv);
+    });
+  };
+
+  // on clicking a field on the board
+  function clickField(event) {
+    if (board[event.target.id] === "-") {
+      turn(event.target.id);
+    }
+  }
+
+  // a single turn of the game
+  function turn(squareID) {
+    board[squareID] = currentPlayer.token;
+    document.getElementById(`${squareID}`).textContent = currentPlayer.token;
+
+    // check if the game's ended
+    let gameWon = checkWin();
+
+    if (gameWon) {
+      return endGame();
+    }
+    // if it's a player vs player game, change the current player to the other one (PlayerOne - PlayerTwo)
+    if (mode === "player-game") {
+      if (currentPlayer === playerOne) {
+        currentPlayer = playerTwo;
+      } else {
+        currentPlayer = playerOne;
+      }
+    }
+    console.log(mode, squareID);
+  }
+
+  function checkWin() {
+    let gameWon = null;
+    let currPlayerMoves = board.reduce(
+      (array, element, inc) =>
+        element === currentPlayer.token ? array.concat(inc) : array,
+      []
+    );
+    for (let [index, win] of winCombos.entries()) {
+      if (win.every((elem) => currPlayerMoves.indexOf(elem) > -1)) {
+        gameWon = "lala";
+        break;
+      }
+    }
+    return gameWon;
+  }
+
+  function endGame() {
+    console.log("the game ends!" + currentPlayer.name + " wins!");
+  }
+  let createBoard1 = () => {
     board.forEach((element, index, arr) => {
       const fieldDiv = document.createElement("div");
       fieldDiv.textContent = element;
@@ -109,7 +186,7 @@ const gameboard = (() => {
     restartButton.removeAttribute("id", "hidden");
   }
 
-  return { board, createBoard, fillBoard, showRestartBtn };
+  return { board, createBoard, fillBoard, showRestartBtn, checkWin };
 })();
 
 const game = (() => {

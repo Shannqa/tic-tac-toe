@@ -22,13 +22,16 @@ const pcHard = document.querySelector("#pc-hard");
 
 pcGame.addEventListener("click", () => {
   mode = "pc-game";
+  gameboard.restartGame();
 });
 playerGame.addEventListener("click", () => {
   mode = "player-game";
+  gameboard.restartGame();
 });
 
 pcHard.addEventListener("click", () => {
   mode = "pc-hard";
+  gameboard.restartGame();
 });
 
 /* Gameboard module */
@@ -143,7 +146,7 @@ const gameboard = (() => {
     createBoard();
   }
 
-  return { board, createBoard, checkWin };
+  return { board, createBoard, checkWin, restartGame };
 })();
 
 gameboard.createBoard();

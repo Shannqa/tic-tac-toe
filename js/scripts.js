@@ -61,6 +61,8 @@ const gameboard = (() => {
       squares[i].textContent = "-";
       squares[i].addEventListener("click", clickField);
     }
+    playerInfo.textContent =
+      "Next move: " + currentPlayer.name + " (" + currentPlayer.token + ")";
   }
 
   // on clicking a field on the board
@@ -79,7 +81,7 @@ const gameboard = (() => {
     let gameWon = checkWin();
 
     if (gameWon) {
-      return endGame();
+      return endGame(gameWon);
     }
     // if it's a player vs player game, change the current player to the other one (PlayerOne - PlayerTwo)
     if (mode === "player-game") {
@@ -88,7 +90,10 @@ const gameboard = (() => {
       } else {
         currentPlayer = playerOne;
       }
+      playerInfo.textContent =
+        "Next move: " + currentPlayer.name + " (" + currentPlayer.token + ")";
     }
+
     console.log(mode, squareID);
   }
 
@@ -101,15 +106,22 @@ const gameboard = (() => {
     );
     for (let [index, win] of winCombos.entries()) {
       if (win.every((elem) => currPlayerMoves.indexOf(elem) > -1)) {
-        gameWon = "lala";
+        gameWon = currentPlayer;
         break;
       }
+    }
+    if (gameWon === null && !board.includes("-")) {
+      gameWon = "Tie";
     }
     return gameWon;
   }
 
-  function endGame() {
-    console.log("the game ends! " + currentPlayer.name + " wins!");
+  function endGame(gameWon) {
+    if (gameWon === "Tie") {
+      playerInfo.textContent = "The game ends in a tie!";
+    } else {
+      playerInfo.textContent = "The game ends! " + gameWon.name + " wins!";
+    }
 
     for (let i = 0; i < squares.length; i++) {
       squares[i].removeEventListener("click", clickField);
@@ -133,65 +145,5 @@ const gameboard = (() => {
 
   return { board, createBoard, checkWin };
 })();
-
-// const game = (() => {
-//   function evaluate() {
-//     /* Board:
-//     0 1 2
-//     3 4 5
-//     6 7 8 */
-
-//     if (
-//       // 0 1 2
-//       (gameboard.board[0] !== "-" &&
-//         gameboard.board[0] === gameboard.board[1] &&
-//         gameboard.board[0] === gameboard.board[2]) ||
-//       // 3 4 5
-//       (gameboard.board[3] !== "-" &&
-//         gameboard.board[3] === gameboard.board[4] &&
-//         gameboard.board[3] === gameboard.board[5]) ||
-//       // 6 7 8
-//       (gameboard.board[6] !== "-" &&
-//         gameboard.board[6] === gameboard.board[7] &&
-//         gameboard.board[7] === gameboard.board[8]) ||
-//       // 0 3 6
-//       (gameboard.board[0] !== "-" &&
-//         gameboard.board[0] === gameboard.board[3] &&
-//         gameboard.board[0] === gameboard.board[6]) ||
-//       // 1 4 7
-//       (gameboard.board[1] !== "-" &&
-//         gameboard.board[1] === gameboard.board[4] &&
-//         gameboard.board[1] === gameboard.board[7]) ||
-//       // 2 5 8
-//       (gameboard.board[2] !== "-" &&
-//         gameboard.board[2] === gameboard.board[5] &&
-//         gameboard.board[2] === gameboard.board[8]) ||
-//       // 0 4 8
-//       (gameboard.board[0] !== "-" &&
-//         gameboard.board[0] === gameboard.board[4] &&
-//         gameboard.board[0] === gameboard.board[8]) ||
-//       // 2 4 6
-//       (gameboard.board[2] !== "-" &&
-//         gameboard.board[2] === gameboard.board[4] &&
-//         gameboard.board[2] === gameboard.board[6])
-//     ) {
-//       console.log("win");
-//       playerInfo.textContent =
-//         nextMove.playerName + " (" + nextMove.playerToken + ") won the game!";
-//       gameState = "off";
-//       nextMove = undefined;
-//       gameboard.showRestartBtn();
-//     } else if (!gameboard.board.includes("-")) {
-//       console.log("draw");
-//       playerInfo.textContent = "The game ends in a draw!";
-//       gameState = "off";
-//       nextMove = undefined;
-//       gameboard.showRestartBtn();
-//     }
-
-//     return { gameState };
-//   }
-//   return { evaluate };
-// })();
 
 gameboard.createBoard();

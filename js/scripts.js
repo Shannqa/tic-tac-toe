@@ -21,7 +21,7 @@ const playerGame = document.querySelector("#player-game");
 const pcHard = document.querySelector("#pc-hard");
 
 pcGame.addEventListener("click", () => {
-  mode = "pc-game";
+  mode = "pc-normal";
   gameboard.restartGame();
 });
 playerGame.addEventListener("click", () => {
@@ -68,10 +68,23 @@ const gameboard = (() => {
       "Next move: " + currentPlayer.name + " (" + currentPlayer.token + ")";
   }
 
+  let emptySquares = () => {
+    return board.filter((s) => typeof s == "number");
+  };
+  let randomS = () => {
+    let empty = emptySquares();
+    let random = Math.floor(Math.random() * empty.length);
+    return empty[random];
+  };
+
   // on clicking a field on the board
   function clickField(event) {
     if (typeof board[event.target.id] == "number") {
-      turn(event.target.id, playerOne);
+      turn(event.target.id, currentPlayer);
+      if (mode === "pc-normal" && !checkWin(board, playerOne) && !checkTie()) {
+        let randomSquare = Math.floor(Math.random() * emptySquares().length);
+        turn(randomS(), playerThree);
+      }
       if (mode === "pc-hard" && !checkWin(board, playerOne) && !checkTie()) {
         turn(bestSpot(), playerFour);
       }
@@ -84,8 +97,7 @@ const gameboard = (() => {
     document.getElementById(`${squareID}`).textContent = player.token;
 
     // check if the game's ended
-    let gameWon = chec;
-    kWin(board, player);
+    let gameWon = checkWin(board, player);
 
     if (gameWon) {
       return endGame(gameWon);
@@ -109,14 +121,12 @@ const gameboard = (() => {
       for (let i = 0; i < squares.length; i++) {
         squares[i].removeEventListener("click", clickField);
       }
-      //declareWinner("Tie Game!");
+      playerInfo.textContent = "Tie!";
       return true;
     }
     return false;
   }
-  function emptySquares() {
-    return board.filter((s) => typeof s == "number");
-  }
+
   function checkWin(gameBoard, player) {
     let playerMoves = gameBoard.reduce(
       (array, element, inc) =>
@@ -137,10 +147,15 @@ const gameboard = (() => {
   }
 
   function endGame(gameWon) {
-    if (gameWon === "Tie") {
+    if (checkTie === true) {
       playerInfo.textContent = "The game ends in a tie!";
     } else {
-      playerInfo.textContent = "The game ends! " + gameWon.name + " wins!";
+      playerInfo.textContent =
+        "The game ends! " +
+        gameWon.player.name +
+        " (" +
+        gameWon.player.token +
+        ") wins!";
     }
 
     for (let i = 0; i < squares.length; i++) {
@@ -216,7 +231,15 @@ const gameboard = (() => {
     return moves[bestMove];
   }
 
-  return { board, createBoard, checkWin, restartGame };
+  return {
+    board,
+    createBoard,
+    checkWin,
+    restartGame,
+    checkTie,
+    emptySquares,
+    randomS,
+  };
 })();
 
 gameboard.createBoard();

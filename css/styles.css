@@ -44,6 +44,7 @@ header {
   grid-template-columns: 100px 100px 100px;
   grid-template-rows: 100px 100px 100px;
 }
+
 .boardContainer div {
   background-color: #e2e8f0;
   border: 1px solid black;
@@ -51,6 +52,10 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.boardContainer div:hover {
+  cursor: pointer;
 }
 
 footer {

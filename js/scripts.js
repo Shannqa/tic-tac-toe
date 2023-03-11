@@ -5,7 +5,7 @@ const playerFactory = (playerID, playerToken, playerName) => {
   const name = playerName;
   return { ID, token, name };
 };
-
+//// works when array is 9
 const playerOne = playerFactory("1", "X", "Player 1");
 const playerTwo = playerFactory("2", "O", "Player 2");
 const playerThree = playerFactory("3", "O", "AI (normal)");
@@ -37,7 +37,7 @@ pcHard.addEventListener("click", () => {
 /* Gameboard module */
 
 const gameboard = (() => {
-  let board = ["-", "-", "-", "-", "-", "-", "-", "-", "-"];
+  let board = Array.from(Array(9).keys());
   let currentPlayer = playerOne;
 
   /* Board: 
@@ -70,18 +70,22 @@ const gameboard = (() => {
 
   // on clicking a field on the board
   function clickField(event) {
-    if (board[event.target.id] === "-") {
-      turn(event.target.id);
+    if (typeof board[event.target.id] == "number") {
+      turn(event.target.id, playerOne);
+      if (mode === "pc-hard" && !checkWin(board, playerOne) && !checkTie()) {
+        turn(bestSpot(), playerFour);
+      }
     }
   }
 
   // a single turn of the game
-  function turn(squareID) {
-    board[squareID] = currentPlayer.token;
-    document.getElementById(`${squareID}`).textContent = currentPlayer.token;
+  function turn(squareID, player) {
+    board[squareID] = player.token;
+    document.getElementById(`${squareID}`).textContent = player.token;
 
     // check if the game's ended
-    let gameWon = checkWin();
+    let gameWon = chec;
+    kWin(board, player);
 
     if (gameWon) {
       return endGame(gameWon);
@@ -100,22 +104,35 @@ const gameboard = (() => {
     console.log(mode, squareID);
   }
 
-  function checkWin() {
-    let gameWon = null;
-    let currPlayerMoves = board.reduce(
+  function checkTie() {
+    if (emptySquares().length == 0) {
+      for (let i = 0; i < squares.length; i++) {
+        squares[i].removeEventListener("click", clickField);
+      }
+      //declareWinner("Tie Game!");
+      return true;
+    }
+    return false;
+  }
+  function emptySquares() {
+    return board.filter((s) => typeof s == "number");
+  }
+  function checkWin(gameBoard, player) {
+    let playerMoves = gameBoard.reduce(
       (array, element, inc) =>
-        element === currentPlayer.token ? array.concat(inc) : array,
+        element === player.token ? array.concat(inc) : array,
       []
     );
+    let gameWon = null;
     for (let [index, win] of winCombos.entries()) {
-      if (win.every((elem) => currPlayerMoves.indexOf(elem) > -1)) {
-        gameWon = currentPlayer;
+      if (win.every((elem) => playerMoves.indexOf(elem) > -1)) {
+        gameWon = { index: index, player: player };
         break;
       }
     }
-    if (gameWon === null && !board.includes("-")) {
-      gameWon = "Tie";
-    }
+    // if (gameWon === null && !gameBoard.includes("-")) {
+    //   gameWon = "Tie";
+    // }
     return gameWon;
   }
 
@@ -139,11 +156,64 @@ const gameboard = (() => {
   function restartGame() {
     gameState = "on";
     currentPlayer = playerOne;
-    board.forEach((elem, index, arr) => {
-      arr[index] = "-";
-    });
+    // board.forEach((elem, index, arr) => {
+    //   arr[index] = "-";
+    // });
+    board = Array.from(Array(9).keys());
     restartBtn.setAttribute("id", "hidden");
     createBoard();
+  }
+
+  function bestSpot() {
+    return minimax(board, playerFour).index;
+  }
+
+  function minimax(newBoard, player) {
+    var availableSpots = emptySquares();
+    if (checkWin(newBoard, playerOne)) {
+      return { score: -10 };
+    } else if (checkWin(newBoard, playerFour)) {
+      return { score: 10 };
+    } else if (availableSpots.length === 0) {
+      return { score: 0 };
+    }
+
+    var moves = [];
+    for (var i = 0; i < availableSpots.length; i++) {
+      var move = {};
+      move.index = newBoard[availableSpots[i]];
+      newBoard[availableSpots[i]] = player.token;
+
+      if (player == playerFour) {
+        var result = minimax(newBoard, playerOne);
+        move.score = result.score;
+      } else {
+        var result = minimax(newBoard, playerFour);
+        move.score = result.score;
+      }
+
+      newBoard[availableSpots[i]] = move.index;
+      moves.push(move);
+    }
+    var bestMove;
+    if (player === playerFour) {
+      var bestScore = -10000;
+      for (var i = 0; i < moves.length; i++) {
+        if (moves[i].score > bestScore) {
+          bestScore = moves[i].score;
+          bestMove = i;
+        }
+      }
+    } else {
+      var bestScore = 10000;
+      for (var i = 0; i < moves.length; i++) {
+        if (moves[i].score < bestScore) {
+          bestScore = moves[i].score;
+          bestMove = i;
+        }
+      }
+    }
+    return moves[bestMove];
   }
 
   return { board, createBoard, checkWin, restartGame };

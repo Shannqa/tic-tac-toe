@@ -94,7 +94,7 @@ const gameboard = (() => {
       if (mode === "ai-easy" && !checkWin(board, playerOne) && !checkTie()) {
         turn(randomS(), playerAI);
       }
-      if (mode === "ai-medium") {
+      if (mode === "ai-medium" && !checkWin(board, playerOne) && !checkTie()) {
         let moveChance = Math.floor(Math.random() * 100);
         if (moveChance < 40) {
           turn(randomS(), playerAI);
@@ -112,7 +112,7 @@ const gameboard = (() => {
   // a single turn of the game
   function turn(squareID, player) {
     board[squareID] = player.token;
-    document.getElementById(`${squareID}`).textContent = player.token;
+    document.getElementById(squareID).textContent = player.token;
 
     // check if the game's ended
     let gameWon = checkWin(board, player);
@@ -131,7 +131,7 @@ const gameboard = (() => {
         "Next move: " + currentPlayer.name + " (" + currentPlayer.token + ")";
     }
 
-    console.log(mode, squareID);
+    // console.log(mode, squareID);
   }
 
   function checkTie() {
@@ -158,9 +158,6 @@ const gameboard = (() => {
         break;
       }
     }
-    // if (gameWon === null && !gameBoard.includes("-")) {
-    //   gameWon = "Tie";
-    // }
     return gameWon;
   }
 

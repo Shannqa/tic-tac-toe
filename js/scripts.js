@@ -8,29 +8,35 @@ const playerFactory = (playerID, playerToken, playerName) => {
 //// works when array is 9
 const playerOne = playerFactory("1", "X", "Player 1");
 const playerTwo = playerFactory("2", "O", "Player 2");
-const playerThree = playerFactory("3", "O", "AI (normal)");
-const playerFour = playerFactory("4", "O", "AI (hard)");
+const playerAI = playerFactory("3", "O", "AI");
 
 const playerInfo = document.querySelector(".player-info");
 let gameState = "on";
 let nextMove = playerOne;
 let mode = "player-game";
 
-const pcGame = document.querySelector("#pc-game");
 const playerGame = document.querySelector("#player-game");
-const pcHard = document.querySelector("#pc-hard");
+const aiEasy = document.querySelector("#ai-easy");
+const aiMedium = document.querySelector("#ai-medium");
+const aiHard = document.querySelector("#ai-hard");
 
-pcGame.addEventListener("click", () => {
-  mode = "pc-normal";
-  gameboard.restartGame();
-});
 playerGame.addEventListener("click", () => {
   mode = "player-game";
   gameboard.restartGame();
 });
 
-pcHard.addEventListener("click", () => {
-  mode = "pc-hard";
+aiEasy.addEventListener("click", () => {
+  mode = "ai-easy";
+  gameboard.restartGame();
+});
+
+aiMedium.addEventListener("click", () => {
+  mode = "ai-medium";
+  gameboard.restartGame();
+});
+
+aiHard.addEventListener("click", () => {
+  mode = "ai-hard";
   gameboard.restartGame();
 });
 
@@ -64,8 +70,12 @@ const gameboard = (() => {
       squares[i].textContent = "-";
       squares[i].addEventListener("click", clickField);
     }
-    playerInfo.textContent =
-      "Next move: " + currentPlayer.name + " (" + currentPlayer.token + ")";
+    if (mode === "player-game") {
+      playerInfo.textContent =
+        "Next move: " + currentPlayer.name + " (" + currentPlayer.token + ")";
+    } else {
+      playerInfo.textContent = "Make your move!  Player: X, AI: O";
+    }
   }
 
   let emptySquares = () => {
@@ -81,12 +91,20 @@ const gameboard = (() => {
   function clickField(event) {
     if (typeof board[event.target.id] == "number") {
       turn(event.target.id, currentPlayer);
-      if (mode === "pc-normal" && !checkWin(board, playerOne) && !checkTie()) {
-        let randomSquare = Math.floor(Math.random() * emptySquares().length);
-        turn(randomS(), playerThree);
+      if (mode === "ai-easy" && !checkWin(board, playerOne) && !checkTie()) {
+        turn(randomS(), playerAI);
       }
-      if (mode === "pc-hard" && !checkWin(board, playerOne) && !checkTie()) {
-        turn(bestSpot(), playerFour);
+      if (mode === "ai-medium") {
+        let moveChance = Math.floor(Math.random() * 100);
+        if (moveChance < 40) {
+          turn(randomS(), playerAI);
+        } else {
+          turn(bestSpot(), playerAI);
+        }
+        console.log(moveChance);
+      }
+      if (mode === "ai-hard" && !checkWin(board, playerOne) && !checkTie()) {
+        turn(bestSpot(), playerAI);
       }
     }
   }
@@ -180,14 +198,14 @@ const gameboard = (() => {
   }
 
   function bestSpot() {
-    return minimax(board, playerFour).index;
+    return minimax(board, playerAI).index;
   }
 
   function minimax(newBoard, player) {
     var availableSpots = emptySquares();
     if (checkWin(newBoard, playerOne)) {
       return { score: -10 };
-    } else if (checkWin(newBoard, playerFour)) {
+    } else if (checkWin(newBoard, playerAI)) {
       return { score: 10 };
     } else if (availableSpots.length === 0) {
       return { score: 0 };
@@ -199,11 +217,11 @@ const gameboard = (() => {
       move.index = newBoard[availableSpots[i]];
       newBoard[availableSpots[i]] = player.token;
 
-      if (player == playerFour) {
+      if (player == playerAI) {
         var result = minimax(newBoard, playerOne);
         move.score = result.score;
       } else {
-        var result = minimax(newBoard, playerFour);
+        var result = minimax(newBoard, playerAI);
         move.score = result.score;
       }
 
@@ -211,7 +229,7 @@ const gameboard = (() => {
       moves.push(move);
     }
     var bestMove;
-    if (player === playerFour) {
+    if (player === playerAI) {
       var bestScore = -10000;
       for (var i = 0; i < moves.length; i++) {
         if (moves[i].score > bestScore) {

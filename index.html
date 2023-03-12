@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;700&family=Rampart+One&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="css/styles.css" />
     <script src="js/scripts.js" defer></script>
     <title>Tic Tac Toe</title>
@@ -11,6 +17,7 @@
   <body>
     <header>Tic Tac Toe</header>
     <div class="mode">
+      <div class="choose-mode">Choose the mode:</div>
       <form>
         <input
           type="radio"
@@ -19,7 +26,7 @@
           id="player-game"
           checked
         />
-        <label for="player-game">Player vs player</label>
+        <label for="player-game">Player vs Player</label>
         <input type="radio" name="mode" value="ai-easy" id="ai-easy" />
         <label for="ai-easy">Player vs AI (easy)</label>
         <input type="radio" name="mode" value="ai-medium" id="ai-medium" />
@@ -29,9 +36,7 @@
       </form>
     </div>
     <div class="player-info">Next move: player 1 (X)</div>
-    <div class="restartDiv">
-      <button id="hidden" class="restart">Play again</button>
-    </div>
+
     <div class="boardContainer">
       <div id="0" class="square"></div>
       <div id="1" class="square"></div>
@@ -42,6 +47,9 @@
       <div id="6" class="square"></div>
       <div id="7" class="square"></div>
       <div id="8" class="square"></div>
+    </div>
+    <div class="restartDiv">
+      <button id="hidden" class="restart">Play again</button>
     </div>
     <footer>Created by Shannqa</footer>
   </body>

@@ -6,28 +6,58 @@ body {
   background-color: #334155;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-items: center;
   align-items: center;
+  display: grid;
+  grid-template-areas:
+    "title title title"
+    "info info info"
+    "button board mode"
+    "footer footer footer";
+  grid-template-columns: 1fr 310px 1fr;
+  font-family: "Golos Text", sans-serif;
 }
 
 header {
-  color: #fff;
-  font-size: 2rem;
+  grid-area: title;
+
+  color: rgba(255, 255, 255, 0.945);
+  font-size: 4rem;
   margin: 20px;
+  font-family: "Rampart One", cursive;
 }
 
 .player-info {
+  grid-area: info;
   margin: 20px;
   color: #fff;
   font-size: 1.5rem;
 }
 
 .mode {
+  grid-area: mode;
   color: #fff;
+  font-size: 1.1rem;
+  margin-right: 20px;
 }
-
+.choose-mode {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.mode form {
+  display: grid;
+  grid-template-columns: 25px 1fr;
+  row-gap: 8px;
+  column-gap: 5px;
+}
+.restartDiv {
+  grid-area: button;
+  /* justify-self: end; */
+  margin-right: 60px;
+  margin-bottom: 5px;
+}
 .restart {
-  margin-bottom: 20px;
   background-color: #e2e8f0;
   color: black;
   padding: 5px 10px;
@@ -40,6 +70,7 @@ header {
 }
 
 .boardContainer {
+  grid-area: board;
   display: grid;
   grid-template-columns: 100px 100px 100px;
   grid-template-rows: 100px 100px 100px;
@@ -59,6 +90,7 @@ header {
 }
 
 footer {
+  grid-area: footer;
   color: #fff;
   margin: 20px;
 }

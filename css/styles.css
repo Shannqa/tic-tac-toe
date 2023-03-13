@@ -10,11 +10,17 @@ body {
   align-items: center;
   display: grid;
   grid-template-areas:
-    "title title title"
-    "info info info"
+    "title"
+    "mode"
+    "button"
+    "board"
+    "footer"
+
+    /* "info info info"
     "button board mode"
     "footer footer footer";
-  grid-template-columns: 1fr 310px 1fr;
+*/
+  grid-template-columns: 1fr;
   font-family: "Golos Text", sans-serif;
 }
 

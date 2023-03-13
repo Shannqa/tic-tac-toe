@@ -12,6 +12,7 @@ body {
   grid-template-areas:
     "title"
     "mode"
+    "info"
     "button"
     "board"
     "footer"

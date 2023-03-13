@@ -46,17 +46,13 @@ header {
   font-size: 1.1rem;
   margin-right: 20px;
 }
+
 .choose-mode {
   font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 5px;
 }
-.mode form {
-  display: grid;
-  grid-template-columns: 25px 1fr;
-  row-gap: 8px;
-  column-gap: 5px;
-}
+
 .restartDiv {
   grid-area: button;
   /* justify-self: end; */

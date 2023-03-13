@@ -17,23 +17,16 @@
   <body>
     <header>Tic Tac Toe</header>
     <div class="mode">
-      <div class="choose-mode">Choose the mode:</div>
-      <form>
-        <input
-          type="radio"
-          name="mode"
+      <label for="mode" class="choose-mode">Choose the mode:</div>
+      <select id="mode" name="mode">
+        <option
           value="player"
           id="player-game"
-          checked
-        />
-        <label for="player-game">Player vs Player</label>
-        <input type="radio" name="mode" value="ai-easy" id="ai-easy" />
-        <label for="ai-easy">Player vs AI (easy)</label>
-        <input type="radio" name="mode" value="ai-medium" id="ai-medium" />
-        <label for="ai-medium">Player vs AI (medium)</label>
-        <input type="radio" name="mode" value="ai-hard" id="ai-hard" />
-        <label for="ai-hard">Player vs AI (hard)</label>
-      </form>
+          selected>Player vs Player</option>
+        <option value="ai-easy" id="ai-easy">Player vs AI (easy)</option>
+        <option value="ai-medium" id="ai-medium">Player vs AI (medium)</option>
+        <option value="ai-hard" id="ai-hard">Player vs AI (hard)</option>
+      </select>
     </div>
     <div class="player-info">Next move: player 1 (X)</div>
 

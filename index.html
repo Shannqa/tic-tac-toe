@@ -15,35 +15,47 @@
     <title>Tic Tac Toe</title>
   </head>
   <body>
-    <header>Tic Tac Toe</header>
-    <div class="mode">
-      <label for="mode" class="choose-mode">Choose the mode:</label>
-      <select id="mode" name="mode">
-        <option
-          value="player"
-          id="player-game"
-          selected>Player vs Player</option>
-        <option value="ai-easy" id="ai-easy">Player vs AI (easy)</option>
-        <option value="ai-medium" id="ai-medium">Player vs AI (medium)</option>
-        <option value="ai-hard" id="ai-hard">Player vs AI (hard)</option>
-        <option value="ai-unbeatable" id="ai-unbeatable">Player vs AI (unbeatable)</option>
-      </select>
+    <div class="container">
+      <header>Tic Tac Toe</header>
+      <div class="mode">
+        <label for="mode" class="choose-mode">Choose the mode:</label>
+        <select id="mode" name="mode">
+          <option value="player" id="player-game" selected>
+            Player vs Player
+          </option>
+          <option value="ai-easy" id="ai-easy">Player vs AI (easy)</option>
+          <option value="ai-medium" id="ai-medium">
+            Player vs AI (medium)
+          </option>
+          <option value="ai-hard" id="ai-hard">Player vs AI (hard)</option>
+          <option value="ai-unbeatable" id="ai-unbeatable">
+            Player vs AI (unbeatable)
+          </option>
+        </select>
+      </div>
+      <div class="player-info">Next move: player 1 (X)</div>
+      <div class="restartDiv" id="hidden">
+        <button class="restart">Play again</button>
+      </div>
+      <div class="boardContainer">
+        <div id="0" class="square"></div>
+        <div id="1" class="square"></div>
+        <div id="2" class="square"></div>
+        <div id="3" class="square"></div>
+        <div id="4" class="square"></div>
+        <div id="5" class="square"></div>
+        <div id="6" class="square"></div>
+        <div id="7" class="square"></div>
+        <div id="8" class="square"></div>
+      </div>
+      <footer>
+        <a
+          href="https://shannqa.github.io/homepage/index.html"
+          target="_blank"
+          class="author"
+          >Created by Shannqa</a
+        >
+      </footer>
     </div>
-    <div class="player-info">Next move: player 1 (X)</div>
-<div class="restartDiv">
-      <button id="hidden" class="restart">Play again</button>
-    </div>
-    <div class="boardContainer">
-      <div id="0" class="square"></div>
-      <div id="1" class="square"></div>
-      <div id="2" class="square"></div>
-      <div id="3" class="square"></div>
-      <div id="4" class="square"></div>
-      <div id="5" class="square"></div>
-      <div id="6" class="square"></div>
-      <div id="7" class="square"></div>
-      <div id="8" class="square"></div>
-    </div>
-    <footer>Created by Shannqa</footer>
   </body>
 </html>

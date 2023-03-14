@@ -15,11 +15,7 @@ let gameState = "on";
 let nextMove = playerOne;
 let mode = "player-game";
 
-const playerGame = document.querySelector("#player-game");
-const aiEasy = document.querySelector("#ai-easy");
-const aiMedium = document.querySelector("#ai-medium");
-const aiHard = document.querySelector("#ai-hard");
-const aiUnbeatable = document.querySelector("#ai-unbeatable");
+/* Select the game mode */
 const modeSelection = document.querySelector("#mode-selection");
 modeSelection.addEventListener("change", (e) => {
   mode = e.target.value;
@@ -175,10 +171,11 @@ const gameboard = (() => {
     for (let i = 0; i < squares.length; i++) {
       squares[i].removeEventListener("click", clickField);
     }
-    restartBtn.removeAttribute("id", "hidden");
+    restartDiv.removeAttribute("id", "hidden");
   }
 
-  const restartBtn = document.querySelector(".restart");
+  const restartDiv = document.querySelector(".restart-div");
+  const restartBtn = document.querySelector(".restart-btn");
   restartBtn.addEventListener("click", restartGame);
 
   /* restarting the game */
@@ -189,7 +186,7 @@ const gameboard = (() => {
     //   arr[index] = "-";
     // });
     board = Array.from(Array(9).keys());
-    restartBtn.setAttribute("id", "hidden");
+    restartDiv.setAttribute("id", "hidden");
     createBoard();
   }
 

@@ -20,34 +20,13 @@ const aiEasy = document.querySelector("#ai-easy");
 const aiMedium = document.querySelector("#ai-medium");
 const aiHard = document.querySelector("#ai-hard");
 const aiUnbeatable = document.querySelector("#ai-unbeatable");
-
-playerGame.addEventListener("click", () => {
-  mode = "player-game";
+const modeSelection = document.querySelector("#mode-selection");
+modeSelection.addEventListener("change", (e) => {
+  mode = e.target.value;
   gameboard.restartGame();
 });
 
-aiEasy.addEventListener("click", () => {
-  mode = "ai-easy";
-  gameboard.restartGame();
-});
-
-aiMedium.addEventListener("click", () => {
-  mode = "ai-medium";
-  gameboard.restartGame();
-});
-
-aiHard.addEventListener("click", () => {
-  mode = "ai-hard";
-  gameboard.restartGame();
-});
-
-
-aiUnbeatable.addEventListener("click", () => {
-  mode = "ai-unbeatable";
-  gameboard.restartGame();
-});
 /* Gameboard module */
-
 const gameboard = (() => {
   let board = Array.from(Array(9).keys());
   let currentPlayer = playerOne;
@@ -109,7 +88,7 @@ const gameboard = (() => {
         }
         console.log(moveChance);
       }
-      
+
       if (mode === "ai-hard" && !checkWin(board, playerOne) && !checkTie()) {
         let moveChance = Math.floor(Math.random() * 100);
         if (moveChance < 10) {
@@ -119,7 +98,11 @@ const gameboard = (() => {
         }
         console.log(moveChance);
       }
-      if (mode === "ai-unbeatable" && !checkWin(board, playerOne) && !checkTie()) {
+      if (
+        mode === "ai-unbeatable" &&
+        !checkWin(board, playerOne) &&
+        !checkTie()
+      ) {
         turn(bestSpot(), playerAI);
       }
     }

@@ -5,7 +5,7 @@ const playerFactory = (playerID, playerToken, playerName) => {
   const name = playerName;
   return { ID, token, name };
 };
-//// works when array is 9
+
 const playerOne = playerFactory("1", "X", "Player 1");
 const playerTwo = playerFactory("2", "O", "Player 2");
 const playerAI = playerFactory("3", "O", "AI");
@@ -21,9 +21,6 @@ modeSelection.addEventListener("change", (e) => {
   mode = e.target.value;
   gameboard.restartGame();
 });
-
-///////// TO DO
-///////// need to check for the tie when all fields are taken
 
 /* Gameboard module */
 const gameboard = (() => {

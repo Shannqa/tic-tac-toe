@@ -48,7 +48,7 @@ const gameboard = (() => {
   // create an empty board
   function createBoard() {
     for (let i = 0; i < squares.length; i++) {
-      squares[i].textContent = "-";
+      squares[i].textContent = "";
       squares[i].addEventListener("click", clickField);
     }
     if (mode === "player-game") {

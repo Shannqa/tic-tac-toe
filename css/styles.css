@@ -9,6 +9,10 @@
     border-radius: 5px;
     color: #000;
     -webkit-appearance: none;
+    padding-left: 2px;
+  }
+  header {
+    font-size: 38px;
   }
 }
 

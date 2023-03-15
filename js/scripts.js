@@ -1,31 +1,29 @@
-/* Players */
-const playerFactory = (playerID, playerToken, playerName) => {
-  const ID = playerID;
-  const token = playerToken;
-  const name = playerName;
-  return { ID, token, name };
-};
-
-const playerOne = playerFactory("1", "X", "Player 1");
-const playerTwo = playerFactory("2", "O", "Player 2");
-const playerAI = playerFactory("3", "O", "AI");
-
-const playerInfo = document.querySelector(".player-info");
-let gameState = "on";
-let nextMove = playerOne;
-let mode = "player-game";
-
-/* Select the game mode */
-const modeSelection = document.querySelector("#mode-selection");
-modeSelection.addEventListener("change", (e) => {
-  mode = e.target.value;
-  gameboard.restartGame();
-});
-
 /* Gameboard module */
 const gameboard = (() => {
+  // players
+  const playerFactory = (playerID, playerToken, playerName) => {
+    const ID = playerID;
+    const token = playerToken;
+    const name = playerName;
+    return { ID, token, name };
+  };
+
+  const playerOne = playerFactory("1", "X", "Player 1");
+  const playerTwo = playerFactory("2", "O", "Player 2");
+  const playerAI = playerFactory("3", "O", "AI");
+  const playerInfo = document.querySelector(".player-info");
+  const squares = document.querySelectorAll(".square");
+
+  let mode = "player-game";
   let board = Array.from(Array(9).keys());
   let currentPlayer = playerOne;
+
+  // select the game mode
+  const modeSelection = document.querySelector("#mode-selection");
+  modeSelection.addEventListener("change", (e) => {
+    mode = e.target.value;
+    restartGame();
+  });
 
   /* Board: 
     0 1 2
@@ -42,8 +40,6 @@ const gameboard = (() => {
     [0, 4, 8],
     [2, 4, 6],
   ];
-
-  const squares = document.querySelectorAll(".square");
 
   // create an empty board
   function createBoard() {
@@ -126,8 +122,6 @@ const gameboard = (() => {
       playerInfo.textContent =
         "Next move: " + currentPlayer.name + " (" + currentPlayer.token + ")";
     }
-
-    // console.log(mode, squareID);
   }
 
   function checkTie() {
@@ -182,11 +176,7 @@ const gameboard = (() => {
 
   /* restarting the game */
   function restartGame() {
-    gameState = "on";
     currentPlayer = playerOne;
-    // board.forEach((elem, index, arr) => {
-    //   arr[index] = "-";
-    // });
     board = Array.from(Array(9).keys());
     restartDiv.setAttribute("id", "hidden");
     createBoard();
@@ -223,6 +213,7 @@ const gameboard = (() => {
       newBoard[availableSpots[i]] = move.index;
       moves.push(move);
     }
+
     var bestMove;
     if (player === playerAI) {
       var bestScore = -10000;
@@ -245,13 +236,7 @@ const gameboard = (() => {
   }
 
   return {
-    board,
     createBoard,
-    checkWin,
-    restartGame,
-    checkTie,
-    emptySquares,
-    randomS,
   };
 })();
 

@@ -75,6 +75,7 @@ const gameboard = (() => {
   function clickField(event) {
     if (typeof board[event.target.id] == "number") {
       turn(event.target.id, currentPlayer);
+      checkTie();
       if (mode === "ai-easy" && !checkWin(board, playerOne) && !checkTie()) {
         turn(randomS(), playerAI);
       }
@@ -138,6 +139,7 @@ const gameboard = (() => {
         squares[i].removeEventListener("click", clickField);
       }
       playerInfo.textContent = "Tie!";
+      restartDiv.removeAttribute("id", "hidden");
       return true;
     }
     return false;

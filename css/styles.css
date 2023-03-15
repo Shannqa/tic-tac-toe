@@ -2,6 +2,16 @@
   box-sizing: border-box;
 }
 
+@media only screen and (max-device-width: 480px) {
+  select {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #000;
+    -webkit-appearance: none;
+  }
+}
+
 body {
   background-color: #334155;
   height: 100%;

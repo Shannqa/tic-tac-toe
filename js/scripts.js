@@ -22,6 +22,9 @@ modeSelection.addEventListener("change", (e) => {
   gameboard.restartGame();
 });
 
+///////// TO DO
+///////// need to check for the tie when all fields are taken
+
 /* Gameboard module */
 const gameboard = (() => {
   let board = Array.from(Array(9).keys());

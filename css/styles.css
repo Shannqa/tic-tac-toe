@@ -11,20 +11,22 @@ body {
 .container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   font-family: "Golos Text", sans-serif;
   height: 100vh;
 }
+
 header {
   color: rgba(255, 255, 255, 0.945);
   font-size: 4rem;
   margin: 5px;
   font-family: "Rampart One", cursive;
+  margin-bottom: 1rem;
 }
 
 .player-info {
-  margin: 5px;
+  margin-bottom: 1rem;
   color: #fff;
   font-size: 1.4rem;
 }
@@ -32,6 +34,7 @@ header {
 .mode {
   color: #fff;
   font-size: 1.2rem;
+  margin-bottom: 1rem;
 }
 
 .choose-mode {
@@ -44,6 +47,7 @@ header {
   padding: 5px 10px;
   font-size: 1.2rem;
   border: 1px solid black;
+  margin-bottom: 1rem;
 }
 
 #hidden {
@@ -55,6 +59,7 @@ header {
   display: grid;
   grid-template-columns: 100px 100px 100px;
   grid-template-rows: 100px 100px 100px;
+  margin-bottom: 1rem;
 }
 
 .boardContainer div {
@@ -72,7 +77,8 @@ header {
 
 footer {
   color: #fff;
-  margin: 1rem;
+  margin-top: auto;
+  margin-bottom: 1rem;
   font-size: 0.8rem;
 }
 
